@@ -1,8 +1,9 @@
-from constants import punctuations
+import re
+import unicodedata
 
 import contractions
-import unicodedata
-import re
+
+from constants import punctuations
 
 
 def normalizer(string):

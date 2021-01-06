@@ -1,6 +1,9 @@
-from constants import data_file_path
-from LP_toolkits import normalizer
+import os
+
 import pandas as pd
+
+from LP_toolkits import normalizer
+from constants import data_file_path
 
 
 def get_processed_data(csv_file_add):
@@ -17,8 +20,8 @@ def get_processed_data(csv_file_add):
 
 
 if __name__ == '__main__':
-    train_add = data_file_path + 'DrugsComTrain_raw.csv'
-    test_add = data_file_path + 'DrugsComTest_raw.csv'
+    train_add = os.path.join(data_file_path, 'drugsComTrain_raw.csv')
+    test_add = os.path.join(data_file_path, 'drugsComTest_raw.csv')
     train = get_processed_data(train_add)
     print('--------------------------------     See Train Results    --------------------------------')
     for condition, drug, review in zip(train['condition'], train['drug'], train['review']):
