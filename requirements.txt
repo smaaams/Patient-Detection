@@ -1,3 +1,5 @@
 pandas>=1.2.0
 contractions<=0.0.45
+numpy~=1.18.5
+matplotlib~=3.3.2
 scikit-learn>=0.24.1
