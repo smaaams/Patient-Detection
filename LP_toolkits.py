@@ -7,6 +7,8 @@ from constants import punctuations
 
 
 def normalizer(string):
+    string = string.replace('&#039;', "'")
+    string = string.replace('&quot;', '"')
     # replace contractions with the complete form of them
     string = contractions.fix(string)
     # remove accented characters (replace them with english chars)
