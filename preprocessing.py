@@ -1,9 +1,10 @@
+import json
 import os
 
 import pandas as pd
 
 from LP_toolkits import normalizer
-from constants import data_file_path
+from constants import data_file_path, selected_conditions
 
 
 def get_processed_data(csv_file_add):
@@ -46,12 +47,34 @@ if __name__ == '__main__':
     train = get_processed_data(train_add)
     # see the result of preprocessed training data
     print('--------------------------------     See Train Results    --------------------------------')
+    train_set = []
     for condition, drug, review in zip(train['condition'], train['drug'], train['review']):
-        print('{}:  {}:     {}'.format(condition, drug, review))
+        if condition not in selected_conditions:
+            continue
+
+        train_set.append({
+            'review': review,
+            'condition': condition,
+            'drug': drug
+        })
+        # print('{}:  {}:     {}'.format(condition, drug, review))
+    with open('data/train.json', 'w') as json_file:
+        json.dump(train_set, json_file)
 
     # call get_preprocessed_data on test data
     test = get_processed_data(test_add)
     # see the result of preprocessed test data
     print('--------------------------------     See Test Results    --------------------------------')
+    test_set = []
     for condition, drug, review in zip(test['condition'], test['drug'], test['review']):
-        print('{}:  {}:     {}'.format(condition, drug, review))
+        if condition not in selected_conditions:
+            continue
+
+        test_set.append({
+            'review': review,
+            'condition': condition,
+            'drug': drug
+        })
+        # print('{}:  {}:     {}'.format(condition, drug, review))
+    with open('data/test.json', 'w') as json_file:
+        json.dump(test_set, json_file)
