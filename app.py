@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from constants import classifier_type_index
+from consts import classifier_type_index
 from classifiers import PatientDetector
 
 if __name__ == '__main__':

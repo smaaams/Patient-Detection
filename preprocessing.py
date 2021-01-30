@@ -4,7 +4,7 @@ import os
 import pandas as pd
 
 from LP_toolkits import normalizer
-from constants import data_file_path, selected_conditions
+from consts import data_file_path, selected_conditions
 
 
 def get_processed_data(csv_file_add):

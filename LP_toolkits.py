@@ -3,7 +3,7 @@ import unicodedata
 
 import contractions
 
-from constants import punctuations
+from consts import punctuations
 
 
 def normalizer(string):

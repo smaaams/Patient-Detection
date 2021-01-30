@@ -18,6 +18,6 @@ selected_conditions = [
     'adhd'
 ]
 
-classifier_type_index = {'Logistic Regression': 0, 'SVC': 1, 'SGD': 2, 'Decision Tree': 3, 'Random Forest': 4,
-                         'ADABoost': 5
-                         }
+classifier_type_index = {
+    'Logistic Regression': 0, 'SVC': 1, 'SGD': 2, 'Decision Tree': 3, 'Random Forest': 4, 'ADABoost': 5
+}
