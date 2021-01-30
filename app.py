@@ -6,9 +6,6 @@ from classifiers import PatientDetector
 if __name__ == '__main__':
     st.set_page_config('Medical Review Analyzer')
 
-    with open("style.css") as f:
-        st.markdown('<style>{}</style>'.format(f.read()), unsafe_allow_html=True)
-
     # model_dir_path = 'linear/data'
     # vectorizer, classifier = load_model(model_dir_path)
     #
