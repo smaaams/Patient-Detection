@@ -1,14 +1,13 @@
 import json
+import pickle
 
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_selection import chi2, SelectKBest
+from sklearn.linear_model import SGDClassifier, LogisticRegression
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.svm import SVC
-from sklearn.linear_model import SGDClassifier, LogisticRegression
-from sklearn.feature_selection import chi2, SelectKBest
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
-from LP_toolkits import normalizer
-import numpy as np
 
 
 class PatientDetector:
@@ -81,10 +80,6 @@ class PatientDetector:
         confusion_mat = confusion_matrix(conditions, predictions)
         print(confusion_mat)
 
-    def query(self, review):
-        # TODO: save each classifier model to be able to load them here, not train them again!!
-        return self.model.predict(np.array([normalizer(review)]))
-
 
 if __name__ == '__main__':
     with open('data/train.json', 'r') as json_file:
@@ -94,6 +89,11 @@ if __name__ == '__main__':
         data_points = json.load(json_file)
         test_set = [(data_point['review'], data_point['condition']) for data_point in data_points]
 
-    patient_detector = PatientDetector(1)
+    patient_detector = PatientDetector(4)
     patient_detector.train(train_set)
     patient_detector.evaluate(test_set)
+
+    with open('data/vectorizer.pkl', 'wb') as pickle_file:
+        pickle.dump(patient_detector.vectorizer, pickle_file)
+    with open('data/model.pkl', 'wb') as pickle_file:
+        pickle.dump(patient_detector.model, pickle_file)

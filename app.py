@@ -1,59 +1,39 @@
+import pickle
+
 import streamlit as st
-import pandas as pd
-from consts import classifier_type_index
-from classifiers import PatientDetector
+
+
+@st.cache(allow_output_mutation=True)
+def load_model(model_dir_path):
+    with open(f'{model_dir_path}/vectorizer.pkl', 'rb') as pickle_file:
+        vectorizer = pickle.load(pickle_file)
+    with open(f'{model_dir_path}/model.pkl', 'rb') as pickle_file:
+        model = pickle.load(pickle_file)
+
+    return vectorizer, model
+
 
 if __name__ == '__main__':
     st.set_page_config('Medical Review Analyzer')
 
-    with open("style.css") as f:
-        st.markdown('<style>{}</style>'.format(f.read()), unsafe_allow_html=True)
+    model_dir_path = 'data'
+    vectorizer, model = load_model(model_dir_path)
 
-    # model_dir_path = 'linear/data'
-    # vectorizer, classifier = load_model(model_dir_path)
-    #
     st.markdown(
         "<h1 style='text-align: center;color: #0a2786;font-size: 30px;'>"
         "Condition Analyzer based on Medical Reviews in Social Networks  </h1>",
         unsafe_allow_html=True)
 
-    df = pd.DataFrame({
-        'classifier name': list(classifier_type_index.keys()),
-        'classifier index': list(classifier_type_index.values())
-    })
+    review = st.text_area(label='write down your review, then press enter')
 
-    # df
-    st.markdown(
-        "<p style='text-align: left; color: #032aac;font-size: 20px;' >write down your review, then press enter </p>",
-        unsafe_allow_html=True)
-
-    review = st.text_input('')
-
-    st.markdown(
-        "<p style='text-align: left; color: #032aac;font-size: 20px;' >Which classifier do you want to use   </p>",
-        unsafe_allow_html=True)
-    option = st.selectbox(
-        '',
-        df['classifier name'])
-    st.markdown(
-        "<p style='text-align: left; color: #032aac;font-size: 20px;' >input review: {} </p>".format(review),
-        unsafe_allow_html=True)
-    st.markdown(
-        "<p style='text-align: left; color: #032aac;font-size: 20px;' >you selected: {} </p>".format(option),
-        unsafe_allow_html=True)
-
-    if len(review) > 0:
-        st.markdown(
-            "<p style='text-align: left; color: #5b0475;font-size: 20px;' >to run classifier on chosen model for given "
-            "review press below button</p>",
-            unsafe_allow_html=True)
-
-        run_model = st.button(label='Run')
-
-        if run_model:
-            model = PatientDetector(classifier_type_index[option])
-            condition = model.query(review)
+    if st.button(label='Run'):
+        if len(review) == 0:
+            st.markdown("<p style=color: red;>Please fill review area!</p>", unsafe_allow_html=True)
+        else:
+            feature_vectors = vectorizer.transform([review])
+            predictions = model.predict(feature_vectors)
+            condition = predictions[0]
             st.markdown(
-                "<p style='text-align: left; color: #035e17;font-size: 20px;' >detected condition: {}</p>".format(
-                    condition),
-                unsafe_allow_html=True)
+                f"<p style='text-align: left; color: #035e17;font-size: 20px;' >detected condition: {condition}</p>",
+                unsafe_allow_html=True
+            )
