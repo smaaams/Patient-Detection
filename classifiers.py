@@ -6,6 +6,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_selection import chi2, SelectKBest
 from sklearn.linear_model import SGDClassifier, LogisticRegression
 from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 
@@ -31,6 +32,8 @@ class PatientDetector:
             self.model = self.build_random_forest_classifier()
         elif classifier_type == 5:
             self.model = self.build_adaboost_classifier()
+        elif classifier_type == 6:
+            self.model = self.build_knn_classifier()
         # self.model = LogisticRegression(n_jobs=-1)
         # self.model = SVC(class_weight='balanced')
         # self.model = SGDClassifier(class_weight='balanced', n_jobs=-1)
@@ -51,10 +54,13 @@ class PatientDetector:
         return DecisionTreeClassifier(class_weight='balanced')
 
     def build_random_forest_classifier(self):
-        return RandomForestClassifier(n_estimators=51, class_weight='balanced', n_jobs=-1)
+        return RandomForestClassifier(n_estimators=101, class_weight='balanced', n_jobs=-1)
 
     def build_adaboost_classifier(self):
         return AdaBoostClassifier(n_estimators=201)
+
+    def build_knn_classifier(self):
+        return KNeighborsClassifier(n_neighbors=21, n_jobs=-1)
 
     def train(self, data_set):
         reviews = [review for review, _ in data_set]
@@ -95,5 +101,5 @@ if __name__ == '__main__':
 
     with open('data/vectorizer.pkl', 'wb') as pickle_file:
         pickle.dump(patient_detector.vectorizer, pickle_file)
-    with open('data/model.pkl', 'wb') as pickle_file:
+    with open('data/random_forest.pkl', 'wb') as pickle_file:
         pickle.dump(patient_detector.model, pickle_file)
