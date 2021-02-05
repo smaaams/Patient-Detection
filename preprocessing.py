@@ -58,7 +58,7 @@ if __name__ == '__main__':
             'drug': drug
         })
         # print('{}:  {}:     {}'.format(condition, drug, review))
-    with open('data/train.json', 'w') as json_file:
+    with open(data_file_path + 'train.json', 'w') as json_file:
         json.dump(train_set, json_file)
 
     # call get_preprocessed_data on test data
@@ -76,5 +76,5 @@ if __name__ == '__main__':
             'drug': drug
         })
         # print('{}:  {}:     {}'.format(condition, drug, review))
-    with open('data/test.json', 'w') as json_file:
+    with open(data_file_path + 'test.json', 'w') as json_file:
         json.dump(test_set, json_file)
